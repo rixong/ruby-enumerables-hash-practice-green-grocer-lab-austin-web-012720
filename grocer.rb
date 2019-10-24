@@ -13,15 +13,19 @@ def consolidate_cart(items)
 return cart
 end
 
-def apply_coupons(coupons, cart)
-  coupons.map do |coupon|
-    item = coupon[:item]
-    if cart.has_key?(item) && cart[item][:count] >= coupon[:num]
-      cart["#{item} W/COUPON"] = {:price => coupon[:cost]/coupon[:num], :clearance => cart[item][:clearance], :count => coupon[:num]}
-      cart[item][:count] -= coupon[:num]
+def consolidate_cart(items)
+  cart = {}
+  items.map do |item|
+    item.each_pair do |(key,value)|
+      if !cart.has_key?(key)
+        cart[key] = value
+        cart[key][:count] = 1
+      else 
+        cart[key][:count] +=1
+      end
     end
   end
-  return cart
+return cart
 end
 
 def apply_clearance (cart)
