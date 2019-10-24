@@ -42,9 +42,15 @@ def checkout (cart_items, coupons)
   final_cart = apply_clearance(cart_after_coupons)
   ### totals cart
   puts final_cart
-  final_cart.reduce(nil) do |memo, (key,value)|
+  total = final_cart.reduce(nil) do |memo, (key,value)|
     memo = 0 if !memo
     memo = memo += value[:count]*value[:price]
     memo
+  end
+  ### checks to apply addditional 10% discount 
+  if total > 100 
+    return total*0.9
+  else
+    return total
   end
 end
