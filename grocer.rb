@@ -36,6 +36,15 @@ def apply_clearance (cart)
   end
 end
 
-def checkout(cart, coupons)
-  # code here
+def checkout (cart_items, coupons)
+  consolidated_cart = consolidate_cart(cart_items)
+  cart_after_coupons = apply_coupons(consolidated_cart, coupons)
+  final_cart = apply_clearance(cart_after_coupons)
+  ### totals cart
+  puts final_cart
+  final_cart.reduce(nil) do |memo, (key,value)|
+    memo = 0 if !memo
+    memo = memo += value[:count]*value[:price]
+    memo
+  end
 end
