@@ -16,13 +16,9 @@ end
 def apply_coupons(coupons, cart)
   coupons.map do |coupon|
     item = coupon[:item]
-    if cart.has_key?(item)
-      cart["#{item} W/COUPON"] = {:price => coupon[:cost]/coupon[:num], :clearance => cart[item][:clearance], :count => 0}
-      while cart[item][:count] > 0 && coupon[:num] > 0 do
-        cart[item][:count] -= 1
-        cart["#{item} W/COUPON"][:count] += 1
-        coupon[:num] -=1
-      end
+    if cart.has_key?(item) && cart[item][:count] >= coupon[:num]
+      cart["#{item} W/COUPON"] = {:price => coupon[:cost]/coupon[:num], :clearance => cart[item][:clearance], :count => coupon[:num]}
+      cart[item][:count] -= coupon[:num]
     end
   end
   return cart
