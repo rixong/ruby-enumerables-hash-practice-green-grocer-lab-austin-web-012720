@@ -48,9 +48,5 @@ def checkout (cart_items, coupons)
     memo
   end
   ### checks to apply addditional 10% discount 
-  if total > 100 
-    return total*0.9
-  else
-    return total
-  end
+  return total >100 ? total*0.9 : total
 end
