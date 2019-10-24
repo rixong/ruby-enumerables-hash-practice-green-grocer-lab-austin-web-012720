@@ -13,8 +13,18 @@ def consolidate_cart(cart)
 return new_cart
 end
 
-def apply_coupons(cart, coupons)
-  # code here
+def apply_coupons(cart, coupons) ## assumes coupons can only be used if buying at least number indicated on coupon
+  coupons.map do |coupon|
+    item = coupon[:item]
+    if cart.has_key?(item) && cart[item][:count] >= coupon[:num]
+      cart["#{item} W/COUPON"] = {:price => coupon[:cost]/coupon[:num], :clearance => cart[item][:clearance], :count => coupon[:num]}
+      cart[item][:count] -= coupon[:num]
+      if cart[item][:count] == 0
+        cart.delete(item)
+      end
+    end
+  end
+  return cart
 end
 
 def apply_clearance(cart)
